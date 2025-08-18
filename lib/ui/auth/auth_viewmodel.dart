@@ -84,6 +84,7 @@ class AuthViewModel extends GetxController {
     } else {
       await register();
     }
+    _isSubmitting.value = false;
   }
 
   Future<void> login() async {
@@ -103,9 +104,7 @@ class AuthViewModel extends GetxController {
     );
   }
 
-  Future<void> register() async {
-    // TODO: lógica para registro
-  }
+  Future<void> register() async {}
 
   @override
   void onClose() {

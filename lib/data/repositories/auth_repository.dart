@@ -4,6 +4,7 @@ import 'package:app4_receitas/di/service_locator.dart';
 import 'package:app4_receitas/utils/app_error.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepository extends GetxController {
   final _service = getIt<AuthService>();
@@ -34,5 +35,18 @@ class AuthRepository extends GetxController {
         (right) => Right(UserProfile.fromSupabase(user.toJson(), right!)),
       );
     });
+  }
+
+  Future<Either<AppError, AuthResponse>> insertUser({
+    required String email,
+    required String password,
+  }) async {
+    final result = await _service.insertUser(email: email, password: password);
+    return result.fold((left) => Left(left), (right) => Right(right));
+  }
+
+  Future<Either<AppError, void>> signOut() async {
+    final result = await _service.signOut();
+    return result.fold((left) => Left(left), (right) => const Right(null));
   }
 }
