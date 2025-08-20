@@ -99,12 +99,33 @@ class AuthViewModel extends GetxController {
       },
       (right) {
         print(right);
+        _clearFields();
         return;
       },
     );
   }
 
-  Future<void> register() async {}
+  Future<void> register() async {
+    final response = await _repository.signUp(
+      email: emailController.text,
+      password: passwordController.text,
+      username: usernameController.text,
+      avatarUrl: avatarUrlController.text,
+    );
+    response.fold(
+      (left) {
+        _errorMessage.value = left.message;
+        print(errorMessage);
+      },
+      (right) {
+        _errorMessage.value =
+            'E-mail de confirmação enviado! Verifique sua caixa de entrada.';
+        _isLoginMode.value = true;
+        print(right);
+        _clearFields();
+      },
+    );
+  }
 
   @override
   void onClose() {
